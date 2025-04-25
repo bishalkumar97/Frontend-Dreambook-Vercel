@@ -3,15 +3,12 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@/components/*": ["src/components/*"],
-      "@/layout/*": ["src/layout/*"],
-      "@/utils/*": ["src/utils/*"],
-      "@/services/*": ["src/services/*"]
-    },
-    "jsx": "react",
-    "module": "commonjs",
-    "target": "es6"
+      "@/components/*": ["./src/components/*"],
+      "@/layout/*": ["./src/layout/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/services/*": ["./src/services/*"]
+    }
   },
-  "exclude": ["node_modules", ".next", "out"],
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", ".next", "out"]
 }

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Layout } from "@/layout";
-import { Button } from "@/components/ui/button";
+import React, { useState } from 'react';
+import Layout from '@/layout/Layout';  // Make sure Layout.js exists in src/layout directory
+import Button from '@/components/Button';  // Update the Button import path
 import { ChevronDown, UploadCloud } from "lucide-react";
 
 const FlipkartData = () => {
