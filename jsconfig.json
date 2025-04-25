@@ -1,16 +1,17 @@
-// {
-//   "compilerOptions": {
-//     "paths": {
-//       "@/*": ["./src/*"]
-//     }
-//   }
-// }
-
 {
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
-    }
-  }
+      "@/*": ["./src/*"],
+      "@/components/*": ["src/components/*"],
+      "@/layout/*": ["src/layout/*"],
+      "@/utils/*": ["src/utils/*"],
+      "@/services/*": ["src/services/*"]
+    },
+    "jsx": "react",
+    "module": "commonjs",
+    "target": "es6"
+  },
+  "exclude": ["node_modules", ".next", "out"],
+  "include": ["src/**/*"]
 }
