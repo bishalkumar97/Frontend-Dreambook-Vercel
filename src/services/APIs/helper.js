@@ -4,7 +4,9 @@ import { toast } from 'react-toastify';
 import { auth } from "../../config/firebase";
 import dayjs from "dayjs";
 
+// Update the base URL to match your deployed backend
 export const URL = 'https://backend-dream-book-vercel.vercel.app/v1';
+export const API_URL = 'https://backend-dream-book-vercel.vercel.app/api';
 
 const MAX_RETRIES = 5;
 const RETRY_DELAY = 1000;
@@ -12,32 +14,44 @@ const LOGIN_PATH = '/';
 
 export const getAuthCurrentUser = async (retryCount = 0) => {
     return new Promise((resolve, reject) => {
-        if (auth.currentUser) {
-            resolve(auth.currentUser);
-            return;
-        }
-
-        const unsubscribe = auth.onAuthStateChanged(user => {
-            unsubscribe();
-            if (user) {
-                resolve(user);
-            } else if (retryCount < MAX_RETRIES) {
-                setTimeout(async () => {
-                    try {
-                        const result = await getAuthCurrentUser(retryCount + 1);
-                        resolve(result);
-                    } catch (error) {
-                        reject(error);
-                    }
-                }, RETRY_DELAY);
-            } else {
-                removeToken();
-                removeRole();
-                removeUser();
-                window.location.href = LOGIN_PATH;
-                reject(new Error('Authentication failed'));
+        try {
+            if (!navigator.onLine) {
+                toast.error("No internet connection. Please check your network.");
+                reject(new Error('No internet connection'));
+                return;
             }
-        });
+
+            if (auth.currentUser) {
+                resolve(auth.currentUser);
+                return;
+            }
+
+            const unsubscribe = auth.onAuthStateChanged(user => {
+                unsubscribe();
+                if (user) {
+                    resolve(user);
+                } else if (retryCount < MAX_RETRIES) {
+                    setTimeout(async () => {
+                        try {
+                            const result = await getAuthCurrentUser(retryCount + 1);
+                            resolve(result);
+                        } catch (error) {
+                            reject(error);
+                        }
+                    }, RETRY_DELAY);
+                } else {
+                    removeToken();
+                    removeRole();
+                    removeUser();
+                    window.location.href = LOGIN_PATH;
+                    reject(new Error('Authentication failed'));
+                }
+            });
+        } catch (error) {
+            console.error('Authentication error:', error);
+            toast.error("Unable to connect to authentication service");
+            reject(error);
+        }
     });
 };
 
